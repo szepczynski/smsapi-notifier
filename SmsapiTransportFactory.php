@@ -19,12 +19,12 @@ class SmsapiTransportFactory extends AbstractTransportFactory
     public function create(Dsn $dsn): TransportInterface
     {
         $scheme = $dsn->getScheme();
-        $authToken = ltrim($dsn->getPath(), '/');
+        $authToken = $dsn->getUser();
         $host = 'default' === $dsn->getHost() ? null : $dsn->getHost();
         $from = $dsn->getOption('from');
         $port = $dsn->getPort();
 
-        if (!$id) {
+        if (!$authToken) {
             throw new IncompleteDsnException('Missing path (maybe you haven\'t update the DSN when upgrading from 5.0).', $dsn->getOriginalDsn());
         }
 
